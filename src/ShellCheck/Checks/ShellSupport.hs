@@ -286,6 +286,8 @@ checkBashisms = ForShell [Sh, Dash, BusyboxSh] $ \t -> do
         | op `elem` [ "|++", "|--", "++|", "--|"] =
             warnMsg id 3018 $ filter (/= '|') op ++ " is"
     bashism (TA_Binary id "**" _ _) = warnMsg id 3019 "exponentials are"
+    bashism (TA_Sequence id (_:_:_)) =
+        unless isBusyboxSh $ warnMsg id 3068 "the comma operator in arithmetic expressions is"
     bashism (T_FdRedirect id "&" (T_IoFile _ (T_Greater _) _)) =
         unless isBusyboxSh $ warnMsg id 3020 "&> is"
     bashism (T_FdRedirect id "" (T_IoFile _ (T_GREATAND _) file)) =

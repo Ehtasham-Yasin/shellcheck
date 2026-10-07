@@ -234,6 +234,30 @@ prop_optionDisablesIssue2 =
 prop_wontParseBadShell =
     [1071] == check "#!/usr/bin/python\ntrue $1\n"
 
+prop_arithmeticCommaIsNotPortable =
+    checkOptionIncludes (Just [3068]) "#!/bin/sh\n: $((x=1,y=2))" == [3068]
+
+prop_arithmeticCommaIsNotSupportedInDash =
+    checkOptionIncludes (Just [3068]) "#!/bin/dash\n: $((1,2))" == [3068]
+
+prop_nestedArithmeticCommaIsNotPortable =
+    checkOptionIncludes (Just [3068]) "#!/bin/sh\n: $(((1,2)+3))" == [3068]
+
+prop_arithmeticCommaSequenceWarnsOnce =
+    checkOptionIncludes (Just [3068]) "#!/bin/sh\n: $((1,2,3))" == [3068]
+
+prop_singleArithmeticExpressionIsPortable =
+    null $ checkOptionIncludes (Just [3068]) "#!/bin/sh\n: $((1+2))"
+
+prop_arithmeticCommaIsSupportedInBash =
+    null $ checkOptionIncludes (Just [3068]) "#!/bin/bash\n: $((1,2))"
+
+prop_arithmeticCommaIsSupportedInKsh =
+    null $ checkOptionIncludes (Just [3068]) "#!/bin/ksh\n: $((1,2))"
+
+prop_arithmeticCommaIsSupportedInBusybox =
+    null $ checkOptionIncludes (Just [3068]) "#!/bin/busybox sh\n: $((1,2))"
+
 prop_optionDisablesBadShebang =
     null $ getErrors
                 (mockedSystemInterface [])

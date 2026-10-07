@@ -1,5 +1,6 @@
 ## Git
 ### Added
+- SC3068: Warn about non-POSIX comma operators in arithmetic expressions
 - SC2337: warn about `grep -q` in pipelines under pipefail
 - SC2338: Optionally suggest `[[ x == y ]]` over `[[ x = y ]]`
   (bash `require-double-equals`)
